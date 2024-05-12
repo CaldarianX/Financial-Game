@@ -468,7 +468,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 704787988}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: Click3
         m_Mode: 1
@@ -737,7 +737,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 704787988}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: Click4
         m_Mode: 1
@@ -758,7 +758,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 704787989}
-  - component: {fileID: 704787988}
+  - component: {fileID: 704787990}
   m_Layer: 0
   m_Name: Logic
   m_TagString: Untagged
@@ -766,7 +766,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &704787988
+--- !u!4 &704787989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704787987}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1660, y: 1359, z: -8.127963}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &704787990
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -791,21 +806,6 @@ MonoBehaviour:
   p3Active: 0
   p4Active: 0
   PlayerNumber: 0
---- !u!4 &704787989
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 704787987}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1660, y: 1359, z: -8.127963}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &736802389
 GameObject:
   m_ObjectHideFlags: 0
@@ -926,7 +926,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1564916648}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: BackToMainMenu
         m_Mode: 1
@@ -1058,7 +1058,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 704787988}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: Click2
         m_Mode: 1
@@ -1265,7 +1265,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1564916648}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: StartGame
         m_Mode: 1
@@ -1321,7 +1321,6 @@ GameObject:
   - component: {fileID: 1564916647}
   - component: {fileID: 1564916646}
   - component: {fileID: 1564916645}
-  - component: {fileID: 1564916648}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1379,31 +1378,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1564916648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1564916644}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be5fc5a7b51f34f8a98486ca6fd76cf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pic1: {fileID: 1925881241}
-  pic2: {fileID: 1111474720}
-  pic3: {fileID: 55009841}
-  pic4: {fileID: 245718017}
-  player1: {fileID: 2129958652}
-  player2: {fileID: 1062354438}
-  player3: {fileID: 359354705}
-  player4: {fileID: 585184614}
-  p1Active: 0
-  p2Active: 0
-  p3Active: 0
-  p4Active: 0
-  PlayerNumber: 0
 --- !u!1 &1725878190
 GameObject:
   m_ObjectHideFlags: 0
@@ -1806,7 +1780,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 704787988}
+      - m_Target: {fileID: 704787990}
         m_TargetAssemblyTypeName: Logic2, Assembly-CSharp
         m_MethodName: Click1
         m_Mode: 1

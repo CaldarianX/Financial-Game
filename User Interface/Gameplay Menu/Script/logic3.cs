@@ -28,30 +28,34 @@ public class logic3 : MonoBehaviour
     public GameObject[] Arrayplayer = new GameObject[4];
     public GameObject[] Stock_List_UI = new GameObject[5];
     public GameObject[] Player_name_UI = new GameObject[4];
+    public GameObject[] House_List_UI = new GameObject[5];
     public TMP_Text ScoreBoard_UI;
     public TMP_Text Portfolio;
     public TMP_Text Player_Balance;
     Dictionary<string, PlayerMoney> Players = new Dictionary<string, PlayerMoney>();
     Dictionary<string, Stock> Stocks = new Dictionary<string, Stock>();
+    House[] House_Detail = new House[5];
     Vector2[] BoardPosition = new Vector2[4];
     Logic2 SelectMenuLogic;
     int index = -1;
     int NumberPlayer;
     int RoundCount = 0;
-    float TimeEachTurn = 30;
-    float Timer = 0;
-    float[] BoardRotation = new float[4];
     bool[] PlayerDetail = new bool[4];
     bool IsTimer = true;
     string[] Namelist = { "P1", "P2", "P3", "P4" };
-
     string[] StockList = { "CPALL", "GULF", "PTT", "ADVANC", "BTS" };
     string[] eventmessage = { "Right now, the economy is getting better", "Now, the economy is going down." };
+    string[] realestate_location = {"Bangkok","Saputprakran","Rayong","ChingMai"};
+    string Selected_Stock_Name = "";
     float[] StockPrice = { 59.00f, 49.00f, 13.25f, 206f, 6.10f };
     float[] StockBit = { 0.25f, 0.25f, 0.25f, 1f, 0.05f };
+    float[] BoardRotation = new float[4];
     float stockup = 1.0f;
     float stockdown = 1.0f;
-    string Selected_Stock_Name = "";
+    float TimeEachTurn = 30;
+    float Timer = 0;
+    
+    
 
     // Dictionary<string, int> ScoreBoard = new Dictionary<string, int>();
     void Start()
@@ -83,6 +87,14 @@ public class logic3 : MonoBehaviour
                 price = StockPrice[i],
                 bit = StockBit[i],
             };
+        }
+        for(int i =0;i<5;i++){
+            House_Detail[i] = new House(){
+                size = UnityEngine.Random.Range(200,300);
+                bedroom = UnityEngine.Random.Range(2,5);
+                restroom = UnityEngine.Random.Range(1,3);
+                location = realestate_location[UnityEngine.Random.Range(0,4)];
+            }
         }
         Update_ScoreBoard();
         BoardPosition[0] = new Vector3(33f, -36f);
@@ -176,7 +188,6 @@ public class logic3 : MonoBehaviour
         ToggleButton(stockmarket_closebutton, stockmarket_menu, true);
     }
     public void CloseStockMarket()
-
     {
         ToggleButton(stockmarket_closebutton, stockmarket_menu, false);
         Buy_Stock_Menu.SetActive(false);
@@ -296,7 +307,12 @@ public class Stock
     public int amount;
     public float bit;
 }
-
+public class House{
+    public int size;
+    public int bedroom;
+    public int restroom;
+    public string location;
+}
 public class PlayerMoney
 {
 
