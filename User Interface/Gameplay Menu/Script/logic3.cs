@@ -1,9 +1,11 @@
 // using System;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,15 +22,25 @@ public class logic3 : MonoBehaviour
     public GameObject Buy_Stock_Menu;
     public GameObject Input_Amount;
     public GameObject Buy_Stock_Bt;
+    public GameObject Buy_RealEstate_Menu;
+    public GameObject Buy_RealEstate_Bt;
     public GameObject Sale_Stock_Button;
     public GameObject Close_Stock_Menu_Button;
     public GameObject Random_Event;
     public GameObject Random_Event_Message;
     public GameObject Skip_Button;
+    public GameObject HouseIconPanal;
+    public GameObject PrefabHouseIcon;
+    public GameObject CondoIconPanal;
+    public GameObject PrefabCondoIcon;
+    public GameObject HotelIconPanal;
+    public GameObject PrefabHotelIcon;
     public GameObject[] Arrayplayer = new GameObject[4];
     public GameObject[] Stock_List_UI = new GameObject[5];
     public GameObject[] Player_name_UI = new GameObject[4];
     public GameObject[] House_List_UI = new GameObject[5];
+    public GameObject[] Condo_List_UI = new GameObject[5];
+    public GameObject[] Hotel_List_UI = new GameObject[5];
     public TMP_Text ScoreBoard_UI;
     public TMP_Text Portfolio;
     public TMP_Text Player_Balance;
@@ -38,6 +50,7 @@ public class logic3 : MonoBehaviour
     Vector2[] BoardPosition = new Vector2[4];
     Logic2 SelectMenuLogic;
     int index = -1;
+    int selected_house;
     int NumberPlayer;
     int RoundCount = 0;
     bool[] PlayerDetail = new bool[4];
@@ -45,7 +58,7 @@ public class logic3 : MonoBehaviour
     string[] Namelist = { "P1", "P2", "P3", "P4" };
     string[] StockList = { "CPALL", "GULF", "PTT", "ADVANC", "BTS" };
     string[] eventmessage = { "Right now, the economy is getting better", "Now, the economy is going down." };
-    string[] realestate_location = {"Bangkok","Saputprakran","Rayong","ChingMai"};
+    string[] realestate_location = { "Bangkok", "Saputprakran", "Rayong", "ChingMai" };
     string Selected_Stock_Name = "";
     float[] StockPrice = { 59.00f, 49.00f, 13.25f, 206f, 6.10f };
     float[] StockBit = { 0.25f, 0.25f, 0.25f, 1f, 0.05f };
@@ -54,8 +67,8 @@ public class logic3 : MonoBehaviour
     float stockdown = 1.0f;
     float TimeEachTurn = 30;
     float Timer = 0;
-    
-    
+
+
 
     // Dictionary<string, int> ScoreBoard = new Dictionary<string, int>();
     void Start()
@@ -88,14 +101,8 @@ public class logic3 : MonoBehaviour
                 bit = StockBit[i],
             };
         }
-        for(int i =0;i<5;i++){
-            House_Detail[i] = new House(){
-                size = UnityEngine.Random.Range(200,300);
-                bedroom = UnityEngine.Random.Range(2,5);
-                restroom = UnityEngine.Random.Range(1,3);
-                location = realestate_location[UnityEngine.Random.Range(0,4)];
-            }
-        }
+        Generate_House_Detail();
+        Load_House_Detail();
         Update_ScoreBoard();
         BoardPosition[0] = new Vector3(33f, -36f);
         BoardPosition[1] = new Vector3(-180f, -25f);
@@ -132,6 +139,8 @@ public class logic3 : MonoBehaviour
             Update_Net_worth();
             Update_ScoreBoard();
             Random_Event_Logic();
+            Generate_House_Detail();
+            Load_House_Detail();
             foreach (var stock in Stocks)
             {
                 stock.Value.price = Generate_Stock_Price(stock.Value.price, stock.Value.bit);
@@ -292,6 +301,87 @@ public class logic3 : MonoBehaviour
     {
         Player_Balance.text = "Balance : " + Players[Namelist[index]].Money.ToString();
     }
+    public void Generate_House_Detail()
+    {
+        // int[] location_price = { 200000, 100000, 50000, 50000 };
+        for (int i = 0; i < 5; i++)
+        {
+            int Hsize = UnityEngine.Random.Range(150, 400);
+            int Hbedroom = UnityEngine.Random.Range(2, 5);
+            int Hrestroom = UnityEngine.Random.Range(1, 3);
+            string Hlocation = realestate_location[UnityEngine.Random.Range(0, 4)];
+            int Hprice = Convert.ToInt32(Hsize / 300.0f * 700000) + Hbedroom * 100000 + Hrestroom * 20000;
+            Hprice -= Hprice % 10000;
+            House_Detail[i] = new House()
+            {
+                size = Hsize,
+                bedroom = Hbedroom,
+                restroom = Hrestroom,
+                location = Hlocation,
+                price = Hprice,
+            };
+        }
+    }
+    public void Load_House_Detail()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            string show = "  ";
+            show += House_Detail[i].location + ", ";
+            show += Word(House_Detail[i].bedroom, "bedroom") + " ";
+            show += Word(House_Detail[i].restroom, "restroom") + " ";
+            show += Word(House_Detail[i].size, "square meter") + " ";
+            show += "Price : " + string.Format(CultureInfo.InvariantCulture, "{0:N0}", House_Detail[i].price);
+            Debug.Log(show);
+            House_List_UI[i].GetComponent<Text>().text = show;
+            // House_List_UI[i].text = show;
+        }
+    }
+    public string Word(int number, string s)
+    {
+        if (number == 0)
+        {
+            return "No " + s;
+        }
+        if (number == 1)
+        {
+            return number.ToString() + " " + s;
+        }
+        return number.ToString() + " " + s + "s";
+    }
+    public void House_Click(int number)
+    {
+        Buy_RealEstate_Bt.SetActive(true);
+        Buy_RealEstate_Menu.SetActive(true);
+        selected_house = number;
+    }
+    public void Close_House_Menu()
+    {
+        Buy_RealEstate_Bt.SetActive(false);
+        Buy_RealEstate_Menu.SetActive(false);
+    }
+    public void Buy_House()
+    {
+        Players[Namelist[index]].house += 1;
+        Players[Namelist[index]].Money -= House_Detail[selected_house].price;
+        Icon_House_Rendering();
+        Debug.Log("House Buy");
+    }
+    public void Icon_House_Rendering()
+    {
+        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
+        Instantiate(PrefabHouseIcon, HouseIconPanal.transform);
+    }
+    public void Icon_Condo_Rendering()
+    {
+        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
+        Instantiate(PrefabCondoIcon, CondoIconPanal.transform);
+    }
+    public void Icon_Hotel_Rendering()
+    {
+        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
+        Instantiate(PrefabHotelIcon, HouseIconPanal.transform);
+    }
 }
 
 
@@ -307,15 +397,17 @@ public class Stock
     public int amount;
     public float bit;
 }
-public class House{
+public class House
+{
     public int size;
     public int bedroom;
     public int restroom;
     public string location;
+    public int price;
 }
 public class PlayerMoney
 {
-
+    public int house = 0;
     public int Net_Worth = 0;
     public int Money = 0;
     public int Salary = 30000;
