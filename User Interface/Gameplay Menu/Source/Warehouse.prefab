@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5152423209359653109}
   - component: {fileID: 6797448848058329296}
   m_Layer: 0
-  m_Name: Hotel
+  m_Name: Warehouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,7 @@
 // using System;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
@@ -33,25 +34,35 @@ public class logic3 : MonoBehaviour
     public GameObject PrefabHouseIcon;
     public GameObject CondoIconPanal;
     public GameObject PrefabCondoIcon;
-    public GameObject HotelIconPanal;
-    public GameObject PrefabHotelIcon;
+    public GameObject WarehouseIconPanal;
+    public GameObject PrefabWarehouseIcon;
+    public GameObject BankMenu;
+    public GameObject CloseButton;
+    public GameObject BorrowMoneyBt;
+    public Text InputAmountField;
+    public GameObject Interest_Message;
     public GameObject[] Arrayplayer = new GameObject[4];
     public GameObject[] Stock_List_UI = new GameObject[5];
     public GameObject[] Player_name_UI = new GameObject[4];
     public GameObject[] House_List_UI = new GameObject[5];
     public GameObject[] Condo_List_UI = new GameObject[5];
-    public GameObject[] Hotel_List_UI = new GameObject[5];
+    public GameObject[] Warehouse_List_UI = new GameObject[5];
     public TMP_Text ScoreBoard_UI;
     public TMP_Text Portfolio;
     public TMP_Text Player_Balance;
     Dictionary<string, PlayerMoney> Players = new Dictionary<string, PlayerMoney>();
     Dictionary<string, Stock> Stocks = new Dictionary<string, Stock>();
     House[] House_Detail = new House[5];
+    Condo[] Condo_Detail = new Condo[5];
+    Warehouse[] Warehouse_Detail = new Warehouse[5];
     Vector2[] BoardPosition = new Vector2[4];
     Logic2 SelectMenuLogic;
     int index = -1;
     int selected_house;
+    int selected_condo;
+    int selected_warehouse;
     int NumberPlayer;
+    int realestatebuyMode = -1;
     int RoundCount = 0;
     bool[] PlayerDetail = new bool[4];
     bool IsTimer = true;
@@ -101,8 +112,7 @@ public class logic3 : MonoBehaviour
                 bit = StockBit[i],
             };
         }
-        Generate_House_Detail();
-        Load_House_Detail();
+        RealEstate_UI_List();
         Update_ScoreBoard();
         BoardPosition[0] = new Vector3(33f, -36f);
         BoardPosition[1] = new Vector3(-180f, -25f);
@@ -139,8 +149,7 @@ public class logic3 : MonoBehaviour
             Update_Net_worth();
             Update_ScoreBoard();
             Random_Event_Logic();
-            Generate_House_Detail();
-            Load_House_Detail();
+            RealEstate_UI_List();
             foreach (var stock in Stocks)
             {
                 stock.Value.price = Generate_Stock_Price(stock.Value.price, stock.Value.bit);
@@ -239,7 +248,6 @@ public class logic3 : MonoBehaviour
         float DiffPrice = Randoms * bit;
         return price + DiffPrice;
     }
-
     public void Update_ScoreBoard()
 
     {
@@ -301,6 +309,15 @@ public class logic3 : MonoBehaviour
     {
         Player_Balance.text = "Balance : " + Players[Namelist[index]].Money.ToString();
     }
+    public void RealEstate_UI_List()
+    {
+        Generate_Condo_Detail();
+        Generate_House_Detail();
+        Generate_Warehouse_Detail();
+        Load_Condo_Detail();
+        Load_House_Detail();
+        Load_Warehouse_Detail();
+    }
     public void Generate_House_Detail()
     {
         // int[] location_price = { 200000, 100000, 50000, 50000 };
@@ -331,9 +348,77 @@ public class logic3 : MonoBehaviour
             show += Word(House_Detail[i].bedroom, "bedroom") + " ";
             show += Word(House_Detail[i].restroom, "restroom") + " ";
             show += Word(House_Detail[i].size, "square meter") + " ";
-            show += "Price : " + string.Format(CultureInfo.InvariantCulture, "{0:N0}", House_Detail[i].price);
+            show += "\nPrice : " + string.Format(CultureInfo.InvariantCulture, "{0:N0}", House_Detail[i].price);
             Debug.Log(show);
             House_List_UI[i].GetComponent<Text>().text = show;
+            // House_List_UI[i].text = show;
+        }
+    }
+    public void Generate_Condo_Detail()
+    {
+        int[] location_price = { 400000, 30000, 50000, 50000 };
+        for (int i = 0; i < 5; i++)
+        {
+            int Hsize = UnityEngine.Random.Range(4, 7) * 5;
+            int Hbedroom = UnityEngine.Random.Range(1, 3);
+            int loactionRandom = UnityEngine.Random.Range(0, 4);
+            string Hlocation = realestate_location[loactionRandom];
+            int Hprice = Convert.ToInt32(Hsize / 25.0f * 500000) + Hbedroom * 100000 + location_price[loactionRandom];
+            Hprice -= Hprice % 10000;
+            Condo_Detail[i] = new Condo()
+            {
+                size = Hsize,
+                bedroom = Hbedroom,
+                location = Hlocation,
+                price = Hprice,
+            };
+        }
+    }
+    public void Load_Condo_Detail()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            string show = "  ";
+            show += Condo_Detail[i].location + ", ";
+            show += Word(Condo_Detail[i].bedroom, "bedroom") + " ";
+            show += Word(Condo_Detail[i].size, "square meter") + " ";
+            show += "\nPrice : " + string.Format(CultureInfo.InvariantCulture, "{0:N0}", Condo_Detail[i].price);
+            Debug.Log(show);
+            Condo_List_UI[i].GetComponent<Text>().text = show;
+            // House_List_UI[i].text = show;
+        }
+    }
+    public void Generate_Warehouse_Detail()
+    {
+        int[] location_price = { 300000, 60000, 50000, 50000 };
+        for (int i = 0; i < 5; i++)
+        {
+            int Hsize = UnityEngine.Random.Range(100, 1000);
+            int loactionRandom = UnityEngine.Random.Range(0, 4);
+            int Hunits = UnityEngine.Random.Range(3, 6) * 10;
+            string Hlocation = realestate_location[loactionRandom];
+            int Hprice = Convert.ToInt32(Hsize / 100 * 200000) + location_price[loactionRandom];
+            Hprice -= Hprice % 10000;
+            Warehouse_Detail[i] = new Warehouse()
+            {
+                size = Hsize,
+                units = Hunits,
+                location = Hlocation,
+                price = Hprice,
+            };
+        }
+    }
+    public void Load_Warehouse_Detail()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            string show = "  ";
+            show += Warehouse_Detail[i].location + ", ";
+            show += Word(Warehouse_Detail[i].size, "square meter") + " ";
+            show += Word(Warehouse_Detail[i].units, "Unit") + ", ";
+            show += "\nPrice : " + string.Format(CultureInfo.InvariantCulture, "{0:N0}", Warehouse_Detail[i].price);
+            Debug.Log(show);
+            Warehouse_List_UI[i].GetComponent<Text>().text = show;
             // House_List_UI[i].text = show;
         }
     }
@@ -354,18 +439,62 @@ public class logic3 : MonoBehaviour
         Buy_RealEstate_Bt.SetActive(true);
         Buy_RealEstate_Menu.SetActive(true);
         selected_house = number;
+        realestatebuyMode = 1;
+    }
+    public void Condo_Click(int number)
+    {
+        Buy_RealEstate_Bt.SetActive(true);
+        Buy_RealEstate_Menu.SetActive(true);
+        selected_condo = number;
+        realestatebuyMode = 2;
+    }
+    public void Warehouse_Click(int number)
+    {
+        Buy_RealEstate_Bt.SetActive(true);
+        Buy_RealEstate_Menu.SetActive(true);
+        selected_warehouse = number;
+        realestatebuyMode = 3;
     }
     public void Close_House_Menu()
     {
         Buy_RealEstate_Bt.SetActive(false);
         Buy_RealEstate_Menu.SetActive(false);
     }
-    public void Buy_House()
+    public void RealEstateBuyBT()
+    {
+        if (realestatebuyMode == 1)
+        {
+            Buy_house();
+        }
+        else if (realestatebuyMode == 2)
+        {
+            Buy_Condo();
+        }
+        else if (realestatebuyMode == 3)
+        {
+            Buy_warehouse();
+        }
+    }
+    public void Buy_house()
     {
         Players[Namelist[index]].house += 1;
         Players[Namelist[index]].Money -= House_Detail[selected_house].price;
         Icon_House_Rendering();
         Debug.Log("House Buy");
+    }
+    public void Buy_Condo()
+    {
+        Players[Namelist[index]].condo += 1;
+        Players[Namelist[index]].Money -= Condo_Detail[selected_condo].price;
+        Icon_Condo_Rendering();
+        Debug.Log("Condo Buy");
+    }
+    public void Buy_warehouse()
+    {
+        Players[Namelist[index]].warehouse += 1;
+        Players[Namelist[index]].Money -= Warehouse_Detail[selected_warehouse].price;
+        Icon_Warehouse_Rendering();
+        Debug.Log("Warehouse Buy");
     }
     public void Icon_House_Rendering()
     {
@@ -377,10 +506,20 @@ public class logic3 : MonoBehaviour
         // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
         Instantiate(PrefabCondoIcon, CondoIconPanal.transform);
     }
-    public void Icon_Hotel_Rendering()
+    public void Icon_Warehouse_Rendering()
     {
         // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
-        Instantiate(PrefabHotelIcon, HouseIconPanal.transform);
+        Instantiate(PrefabWarehouseIcon, WarehouseIconPanal.transform);
+    }
+    public void OpenBankMenu(bool open)
+    {
+        BankMenu.SetActive(open);
+    }
+    public void CalculateInterset()
+    {
+        int borrowmoney = int.Parse(InputAmountField.text);
+        int interestperMonth = Convert.ToInt32((borrowmoney * 0.06) / 12);
+        Interest_Message.GetComponent<TMP_Text>().text = "= " + interestperMonth.ToString() + "/month";
     }
 }
 
@@ -397,6 +536,20 @@ public class Stock
     public int amount;
     public float bit;
 }
+public class Warehouse
+{
+    public int size;
+    public int units;
+    public int price;
+    public string location;
+}
+public class Condo
+{
+    public int size;
+    public int bedroom;
+    public int price;
+    public string location;
+}
 public class House
 {
     public int size;
@@ -408,6 +561,11 @@ public class House
 public class PlayerMoney
 {
     public int house = 0;
+    public List<House> Player_House = new List<House>();
+    public List<Condo> Player_Condo = new List<Condo>();
+    public List<Warehouse> Player_Warehouse = new List<Warehouse>();
+    public int condo = 0;
+    public int warehouse = 0;
     public int Net_Worth = 0;
     public int Money = 0;
     public int Salary = 30000;
