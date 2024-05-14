@@ -39,7 +39,7 @@ public class logic3 : MonoBehaviour
     public GameObject More_Info_RealEstate_Message;
     public GameObject More_Info_Bank_Message;
     public GameObject More_Info_Bank;
-
+    public GameObject End_Game_Menu;
     public Text Bank_Borrow_Money_Input;
     public GameObject Bank_Monthly_Pay;
     public GameObject[] Arrayplayer = new GameObject[4];
@@ -49,6 +49,7 @@ public class logic3 : MonoBehaviour
     public GameObject[] Condo_List_UI = new GameObject[5];
     public GameObject[] Warehouse_List_UI = new GameObject[5];
     public TMP_Text ScoreBoard_UI;
+    public TMP_Text WinnerName;
     public TMP_Text Portfolio;
     public TMP_Text Player_Balance;
     Dictionary<string, PlayerMoney> Players_Data = new Dictionary<string, PlayerMoney>();
@@ -77,7 +78,7 @@ public class logic3 : MonoBehaviour
     float[] BoardRotation = new float[4];
     float stockup = 1.0f;
     float stockdown = 1.0f;
-    float TimeEachTurn = 30;
+    float TimeEachTurn = 120;
     float Timer = 0;
 
 
@@ -135,7 +136,7 @@ public class logic3 : MonoBehaviour
             Timer += Time.deltaTime;
         }
 
-        if (Timer > TimeEachTurn)
+        if (Timer >= TimeEachTurn)
         {
             Reset_Timer_UI();
             NextTurn();
@@ -165,9 +166,9 @@ public class logic3 : MonoBehaviour
             {
                 player.Value.Pay_Loan();
             }
-
         }
         Timer_UI(Timer, TimeEachTurn, Timer_Bar_Turn);
+        Debug.Log(Timer);
         // Players_Data[Namelist[index]] = Players_Data[Namelist[index]];
     }
     public void NextTurn()
@@ -259,16 +260,23 @@ public class logic3 : MonoBehaviour
         float DiffPrice = Randoms * bit;
         return price + DiffPrice;
     }
-    public void Update_ScoreBoard()
+    public string Update_ScoreBoard()
 
     {
         var SortedMoney = Players_Data.OrderByDescending(pair => pair.Value.Net_Worth);
         string Show = "";
+        string winner = "";
+        int mon = -1;
         foreach (var player in SortedMoney)
         {
+            if (player.Value.Net_Worth > mon)
+            {
+                winner = player.Value.name;
+            }
             Show += player.Value.name + " : " + player.Value.Net_Worth.ToString() + "\n";
         }
         ScoreBoard_UI.text = Show;
+        return winner;
     }
     public void TimerUpdate(bool Ison)
     {
@@ -567,22 +575,42 @@ public class logic3 : MonoBehaviour
     }
     public string Load_Player_RealEstate_Port()
     {
-        string show = "House \n";
+        string show = "";
+        if (Players_Data[Namelist[index]].Player_House.Count != 0)
+        {
+            show = "House \n";
+        }
         foreach (var house in Players_Data[Namelist[index]].Player_House)
         {
             show += house.location + " " + Word(house.bedroom, "Bedroom") + " " + Word(house.restroom, "Restroom") + " " + Word(house.price, "Baht") + "\n";
         }
-        show += "Condo\n";
+        if (Players_Data[Namelist[index]].Player_Condo.Count != 0)
+        {
+            show += "\nCondo\n";
+        }
         foreach (var condo in Players_Data[Namelist[index]].Player_Condo)
         {
             show += condo.location + " " + Word(condo.size, "Square Meter") + " " + Word(condo.price, "Baht") + "\n";
         }
-        show += "Warehouse\n";
+        if (Players_Data[Namelist[index]].Player_Warehouse.Count != 0)
+        {
+            show += "\nWarehouse\n";
+        }
         foreach (var warehouse in Players_Data[Namelist[index]].Player_Warehouse)
         {
             show += warehouse.location + " " + Word(warehouse.size, "Square Meter") + " " + Word(warehouse.units, "Unit") + " " + Word(warehouse.price, "Baht") + "\n";
         }
         return show;
+    }
+    public string Load_Player_Loan()
+    {
+        string show = "";
+        foreach (var loan in Players_Data[Namelist[index]].Player_Loan)
+        {
+            show += loan.amount + " Baht   Pay" + loan.CalculateMonthlyPayment().ToString() + " /m.   \n";
+        }
+        return show;
+
     }
     public void More_Info_Menu_Message(int x)
     {
@@ -599,8 +627,23 @@ public class logic3 : MonoBehaviour
         }
         else if (Convert.ToBoolean(x & (1 << 2)))
         {
-            More_Info_Bank_Message.GetComponent<TMP_Text>().text = Load_player_Portolio();
+            More_Info_Bank_Message.GetComponent<TMP_Text>().text = Load_Player_Loan();
         }
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void End_Game_Menu_Logic()
+    {
+        End_Game_Menu.SetActive(true);
+        string onestname = Update_ScoreBoard();
+        WinnerName.text = onestname;
+        TimerUpdate(false);
     }
 
 }

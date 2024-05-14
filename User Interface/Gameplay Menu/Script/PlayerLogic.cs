@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 public class PlayerMoney
 {
     // logic3 logic;
@@ -21,16 +19,21 @@ public class PlayerMoney
     public int Salary = 30000;
     // public string name = "";
     // public Dictionary<string, Dictionary<float, int>> Player_Stock = new Dictionary<string, Dictionary<float, int>>();
-    void Start()
-    {
-        // logic = FindAnyObjectByType<logic3>();
-    }
     public void Turn()
     {
         Money += Salary;
     }
     public void Buy_Stock(string name, int amount, float price)
     {
+        foreach (var stock in Player_Stock)
+        {
+            if (stock.name == name && stock.price == price)
+            {
+                stock.amount += amount;
+                Money -= Convert.ToInt32(price * amount);
+                return;
+            }
+        }
         Stock new_stock = new Stock()
         {
             name = name,
