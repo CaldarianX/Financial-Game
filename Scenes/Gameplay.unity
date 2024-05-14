@@ -3457,7 +3457,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1587348916}
         m_TargetAssemblyTypeName: logic3, Assembly-CSharp
-        m_MethodName: OpenBankMenu
+        m_MethodName: OpenBank_Menu
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3621,7 +3621,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -4415,12 +4415,12 @@ RectTransform:
   - {fileID: 2003868182}
   - {fileID: 2095749375}
   - {fileID: 1523843398}
-  - {fileID: 1853351417}
   - {fileID: 2110290828}
   - {fileID: 855094460}
   - {fileID: 408528239}
   - {fileID: 1626235064}
   - {fileID: 963094266}
+  - {fileID: 1853351417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4872,7 +4872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &855094460
 Transform:
   m_ObjectHideFlags: 0
@@ -6671,7 +6671,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnDidEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1587348916}
+        m_TargetAssemblyTypeName: logic3, Assembly-CSharp
+        m_MethodName: CalculateInterset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6706,7 +6718,7 @@ MonoBehaviour:
   m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
-  m_FillCenter: 1
+  m_FillCenter: 0
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
@@ -6958,7 +6970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 0.5}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -8723,7 +8735,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1523843398
 Transform:
   m_ObjectHideFlags: 0
@@ -8831,32 +8843,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c01dd2108b54dec814cf8fcee48d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  realestate_menu: {fileID: 2110290827}
-  realestate_closebutton: {fileID: 2110290827}
-  stockmarket_menu: {fileID: 1523843397}
-  stockmarket_closebutton: {fileID: 414792331}
-  TimerBar: {fileID: 650019144}
-  Buy_Stock_Menu: {fileID: 855094459}
-  Input_Amount: {fileID: 1689592209}
-  Buy_Stock_Bt: {fileID: 1212142255}
-  Buy_RealEstate_Menu: {fileID: 408528238}
-  Buy_RealEstate_Bt: {fileID: 239184626}
-  Sale_Stock_Button: {fileID: 55240849}
-  Close_Stock_Menu_Button: {fileID: 421244739}
-  Random_Event: {fileID: 1853351416}
-  Random_Event_Message: {fileID: 2046401680}
-  Skip_Button: {fileID: 519407157}
-  HouseIconPanal: {fileID: 1310645763}
-  PrefabHouseIcon: {fileID: 2513747557110001655, guid: 3521cc36c391d46f2998bb8a767efc5c, type: 3}
-  CondoIconPanal: {fileID: 2003051626}
-  PrefabCondoIcon: {fileID: 4288715621977010174, guid: 379efe60e3aa249789c428b53d3c031c, type: 3}
-  WarehouseIconPanal: {fileID: 1289090997}
-  PrefabWarehouseIcon: {fileID: 6136801032273135888, guid: 389ed88e2620f43ef94b567a04e8dc37, type: 3}
-  BankMenu: {fileID: 1626235063}
-  CloseButton: {fileID: 430605229}
-  BorrowMoneyBt: {fileID: 1967676499}
-  InputAmountField: {fileID: 476476224}
-  Interest_Message: {fileID: 2088566702}
+  Real_Estate_Card: {fileID: 2110290827}
+  Real_Estate_CloseButton: {fileID: 157270145}
+  Stock_Market_Card: {fileID: 1523843397}
+  Stock_Market_CloseButton: {fileID: 414792331}
+  Timer_Bar_Turn: {fileID: 650019144}
+  Stock_Market_Buy_Menu: {fileID: 855094459}
+  Stock_Market_Input_Amount: {fileID: 1689592209}
+  Real_Estate_Buy_Menu: {fileID: 408528238}
+  Random_Event_Card: {fileID: 1801999984}
+  Random_Event_Card_Message: {fileID: 2046401680}
+  House_Icon_Grid: {fileID: 1310645763}
+  House_Icon: {fileID: 2513747557110001655, guid: 3521cc36c391d46f2998bb8a767efc5c, type: 3}
+  Condo_Icon_Grid: {fileID: 2003051626}
+  Condo_Icon: {fileID: 4288715621977010174, guid: 379efe60e3aa249789c428b53d3c031c, type: 3}
+  Warehouse_Icon_Grid: {fileID: 1289090997}
+  Warehouse_Icon: {fileID: 6136801032273135888, guid: 389ed88e2620f43ef94b567a04e8dc37, type: 3}
+  Bank_Menu: {fileID: 1626235063}
+  Bank_Borrow_Money_Input: {fileID: 476476224}
+  Bank_Monthly_Pay: {fileID: 2088566702}
   Arrayplayer:
   - {fileID: 253956823}
   - {fileID: 384083270}
@@ -9085,7 +9090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1626235064
 Transform:
   m_ObjectHideFlags: 0
@@ -10563,7 +10568,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10573,7 +10578,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
@@ -10613,11 +10618,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_NormalColor: {r: 1, g: 0.023584902, b: 0.023584902, a: 1}
+    m_HighlightedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_PressedColor: {r: 0.9811321, g: 0, b: 0, a: 1}
+    m_SelectedColor: {r: 1, g: 0, b: 0, a: 1}
+    m_DisabledColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:

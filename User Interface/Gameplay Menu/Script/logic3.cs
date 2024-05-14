@@ -15,32 +15,25 @@ public class logic3 : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public GameObject realestate_menu;
-    public GameObject realestate_closebutton;
-    public GameObject stockmarket_menu;
-    public GameObject stockmarket_closebutton;
-    public GameObject TimerBar;
-    public GameObject Buy_Stock_Menu;
-    public GameObject Input_Amount;
-    public GameObject Buy_Stock_Bt;
-    public GameObject Buy_RealEstate_Menu;
-    public GameObject Buy_RealEstate_Bt;
-    public GameObject Sale_Stock_Button;
-    public GameObject Close_Stock_Menu_Button;
-    public GameObject Random_Event;
-    public GameObject Random_Event_Message;
-    public GameObject Skip_Button;
-    public GameObject HouseIconPanal;
-    public GameObject PrefabHouseIcon;
-    public GameObject CondoIconPanal;
-    public GameObject PrefabCondoIcon;
-    public GameObject WarehouseIconPanal;
-    public GameObject PrefabWarehouseIcon;
-    public GameObject BankMenu;
-    public GameObject CloseButton;
-    public GameObject BorrowMoneyBt;
-    public Text InputAmountField;
-    public GameObject Interest_Message;
+    public GameObject Real_Estate_Card;
+    public GameObject Real_Estate_CloseButton;
+    public GameObject Stock_Market_Card;
+    public GameObject Stock_Market_CloseButton;
+    public GameObject Timer_Bar_Turn;
+    public GameObject Stock_Market_Buy_Menu;
+    public GameObject Stock_Market_Input_Amount;
+    public GameObject Real_Estate_Buy_Menu;
+    public GameObject Random_Event_Card;
+    public GameObject Random_Event_Card_Message;
+    public GameObject House_Icon_Grid;
+    public GameObject House_Icon;
+    public GameObject Condo_Icon_Grid;
+    public GameObject Condo_Icon;
+    public GameObject Warehouse_Icon_Grid;
+    public GameObject Warehouse_Icon;
+    public GameObject Bank_Menu;
+    public Text Bank_Borrow_Money_Input;
+    public GameObject Bank_Monthly_Pay;
     public GameObject[] Arrayplayer = new GameObject[4];
     public GameObject[] Stock_List_UI = new GameObject[5];
     public GameObject[] Player_name_UI = new GameObject[4];
@@ -50,8 +43,8 @@ public class logic3 : MonoBehaviour
     public TMP_Text ScoreBoard_UI;
     public TMP_Text Portfolio;
     public TMP_Text Player_Balance;
-    Dictionary<string, PlayerMoney> Players = new Dictionary<string, PlayerMoney>();
-    Dictionary<string, Stock> Stocks = new Dictionary<string, Stock>();
+    Dictionary<string, PlayerMoney> Players_Data = new Dictionary<string, PlayerMoney>();
+    Dictionary<string, Stock> Stocks_Data = new Dictionary<string, Stock>();
     House[] House_Detail = new House[5];
     Condo[] Condo_Detail = new Condo[5];
     Warehouse[] Warehouse_Detail = new Warehouse[5];
@@ -93,19 +86,19 @@ public class logic3 : MonoBehaviour
             Arrayplayer[i].SetActive(PlayerDetail[i]);
             if (PlayerDetail[i])
             {
-                Players[Namelist[i]] = new PlayerMoney
+                Players_Data[Namelist[i]] = new PlayerMoney
                 {
                     name = Namelist[i],
                     Salary = 100000,
 
                 };
-                Players[Namelist[i]].Turn();
+                Players_Data[Namelist[i]].Turn();
             }
         }
 
         for (int i = 0; i < StockList.Length; i++)
         {
-            Stocks[StockList[i]] = new Stock()
+            Stocks_Data[StockList[i]] = new Stock()
             {
                 name = StockList[i],
                 price = StockPrice[i],
@@ -138,7 +131,7 @@ public class logic3 : MonoBehaviour
         {
             Reset_Timer_UI();
             NextTurn();
-            Load_player_Portolio(index);
+            Load_player_Portolio();
             Update_Player_Balance();
             RoundCount++;
         }
@@ -148,21 +141,26 @@ public class logic3 : MonoBehaviour
             Give_Player_Salary();
             Update_Net_worth();
             Update_ScoreBoard();
-            Random_Event_Logic();
+            Random_Event_Card_Logic();
             RealEstate_UI_List();
-            foreach (var stock in Stocks)
+            foreach (var stock in Stocks_Data)
             {
                 stock.Value.price = Generate_Stock_Price(stock.Value.price, stock.Value.bit);
             }
             for (int i = 0; i < StockPrice.Length; i++)
             {
-                Stock_List_UI[i].GetComponent<TMP_Text>().text = StockList[i] + "  " + Stocks[StockList[i]].price.ToString("F2");
+                Stock_List_UI[i].GetComponent<TMP_Text>().text = StockList[i] + "  " + Stocks_Data[StockList[i]].price.ToString("F2");
                 // Debug.Log(StockList[i] + "  " + StockPrice[i].ToString("F2"));
             }
             RoundCount = 0;
+            foreach (var player in Players_Data)
+            {
+                player.Value.Pay_Loan();
+            }
 
         }
-        Timer_UI(Timer, TimeEachTurn, TimerBar);
+        Timer_UI(Timer, TimeEachTurn, Timer_Bar_Turn);
+        // Players_Data[Namelist[index]] = Players_Data[Namelist[index]];
     }
     public void NextTurn()
     {
@@ -191,33 +189,33 @@ public class logic3 : MonoBehaviour
     }
     public void Reset_Timer_UI()
     {
-        TimerBar.GetComponent<RectTransform>().sizeDelta = new Vector2(686, 17);
+        Timer_Bar_Turn.GetComponent<RectTransform>().sizeDelta = new Vector2(686, 17);
     }
     public void OpenRealEstate()
     {
-        ToggleButton(realestate_closebutton, realestate_menu, true);
+        ToggleButton(Real_Estate_CloseButton, Real_Estate_Card, true);
     }
     public void CloseRealEstate()
     {
-        ToggleButton(realestate_closebutton, realestate_menu, false);
+        ToggleButton(Real_Estate_CloseButton, Real_Estate_Card, false);
     }
     public void OpenStockMarket()
     {
-        ToggleButton(stockmarket_closebutton, stockmarket_menu, true);
+        ToggleButton(Stock_Market_CloseButton, Stock_Market_Card, true);
     }
     public void CloseStockMarket()
     {
-        ToggleButton(stockmarket_closebutton, stockmarket_menu, false);
-        Buy_Stock_Menu.SetActive(false);
+        ToggleButton(Stock_Market_CloseButton, Stock_Market_Card, false);
+        Stock_Market_Buy_Menu.SetActive(false);
     }
     public void Open_Stock_Menu_Logic(string name)
     {
-        Buy_Stock_Menu.SetActive(true);
+        Stock_Market_Buy_Menu.SetActive(true);
         Selected_Stock_Name = name;
     }
     public void Close_Stock_Menu_Logic()
     {
-        Buy_Stock_Menu.SetActive(false);
+        Stock_Market_Buy_Menu.SetActive(false);
     }
     public void ToggleButton(GameObject tmp1, GameObject tmp2, bool Isactive)
     {
@@ -231,14 +229,18 @@ public class logic3 : MonoBehaviour
     }
     public void Buy_Stock_Button()
     {
-        Players[Namelist[index]].Buy_Stock(Selected_Stock_Name, int.Parse(Input_Amount.GetComponent<InputField>().text), Stocks[Selected_Stock_Name].price);
-        Load_player_Portolio(index);
+        Debug.Log(Players_Data[Namelist[index]]);
+        Debug.Log(Selected_Stock_Name);
+        Debug.Log(int.Parse(Stock_Market_Input_Amount.GetComponent<InputField>().text));
+        Debug.Log(Stocks_Data[Selected_Stock_Name].price);
+        Players_Data[Namelist[index]].Buy_Stock(Selected_Stock_Name, int.Parse(Stock_Market_Input_Amount.GetComponent<InputField>().text), Stocks_Data[Selected_Stock_Name].price);
+        Load_player_Portolio();
         Update_ScoreBoard();
         Update_Player_Balance();
     }
-    public void Load_player_Portolio(int index)
+    public void Load_player_Portolio()
     {
-        string port = Players[Namelist[index]].Show_Player_Stock();
+        string port = Players_Data[Namelist[index]].Show_Player_Stock();
         Portfolio.text = port;
     }
     public float Generate_Stock_Price(float price, float bit)
@@ -251,7 +253,7 @@ public class logic3 : MonoBehaviour
     public void Update_ScoreBoard()
 
     {
-        var SortedMoney = Players.OrderByDescending(pair => pair.Value.Net_Worth);
+        var SortedMoney = Players_Data.OrderByDescending(pair => pair.Value.Net_Worth);
         string Show = "";
         foreach (var player in SortedMoney)
         {
@@ -263,7 +265,7 @@ public class logic3 : MonoBehaviour
     {
         IsTimer = Ison;
     }
-    public void Random_Event_Logic()
+    public void Random_Event_Card_Logic()
     {
         TimerUpdate(false);
         int state = UnityEngine.Random.Range(1, 2);
@@ -279,24 +281,24 @@ public class logic3 : MonoBehaviour
             stockup = 0.3f;
             stockdown = 0.7f;
         }
-        Random_Event.SetActive(true);
-        Random_Event_Message.GetComponent<TMP_Text>().text = eventmessage[random_message];
+        Random_Event_Card.SetActive(true);
+        Random_Event_Card_Message.GetComponent<TMP_Text>().text = eventmessage[random_message];
     }
-    public void Close_Random_Event()
+    public void Close_Random_Event_Card()
     {
         TimerUpdate(true);
-        Random_Event.SetActive(false);
+        Random_Event_Card.SetActive(false);
     }
     public void Update_Net_worth()
     {
-        foreach (var player in Players)
+        foreach (var player in Players_Data)
         {
-            player.Value.Calculate_Net_Worth(Stocks);
+            player.Value.Calculate_Net_Worth(Stocks_Data);
         }
     }
     public void Give_Player_Salary()
     {
-        foreach (var player in Players)
+        foreach (var player in Players_Data)
         {
             player.Value.Turn();
         }
@@ -307,7 +309,9 @@ public class logic3 : MonoBehaviour
     }
     public void Update_Player_Balance()
     {
-        Player_Balance.text = "Balance : " + Players[Namelist[index]].Money.ToString();
+        Debug.Log(Players_Data[Namelist[index]].Money);
+        Debug.Log(Player_Balance);
+        Player_Balance.text = "Balance : " + Players_Data[Namelist[index]].Money.ToString();
     }
     public void RealEstate_UI_List()
     {
@@ -436,29 +440,25 @@ public class logic3 : MonoBehaviour
     }
     public void House_Click(int number)
     {
-        Buy_RealEstate_Bt.SetActive(true);
-        Buy_RealEstate_Menu.SetActive(true);
+        Real_Estate_Buy_Menu.SetActive(true);
         selected_house = number;
         realestatebuyMode = 1;
     }
     public void Condo_Click(int number)
     {
-        Buy_RealEstate_Bt.SetActive(true);
-        Buy_RealEstate_Menu.SetActive(true);
+        Real_Estate_Buy_Menu.SetActive(true);
         selected_condo = number;
         realestatebuyMode = 2;
     }
     public void Warehouse_Click(int number)
     {
-        Buy_RealEstate_Bt.SetActive(true);
-        Buy_RealEstate_Menu.SetActive(true);
+        Real_Estate_Buy_Menu.SetActive(true);
         selected_warehouse = number;
         realestatebuyMode = 3;
     }
     public void Close_House_Menu()
     {
-        Buy_RealEstate_Bt.SetActive(false);
-        Buy_RealEstate_Menu.SetActive(false);
+        Real_Estate_Buy_Menu.SetActive(false);
     }
     public void RealEstateBuyBT()
     {
@@ -477,49 +477,66 @@ public class logic3 : MonoBehaviour
     }
     public void Buy_house()
     {
-        Players[Namelist[index]].house += 1;
-        Players[Namelist[index]].Money -= House_Detail[selected_house].price;
+        Players_Data[Namelist[index]].house += 1;
+        Players_Data[Namelist[index]].Money -= House_Detail[selected_house].price;
         Icon_House_Rendering();
         Debug.Log("House Buy");
     }
     public void Buy_Condo()
     {
-        Players[Namelist[index]].condo += 1;
-        Players[Namelist[index]].Money -= Condo_Detail[selected_condo].price;
+        Players_Data[Namelist[index]].condo += 1;
+        Players_Data[Namelist[index]].Money -= Condo_Detail[selected_condo].price;
         Icon_Condo_Rendering();
         Debug.Log("Condo Buy");
     }
     public void Buy_warehouse()
     {
-        Players[Namelist[index]].warehouse += 1;
-        Players[Namelist[index]].Money -= Warehouse_Detail[selected_warehouse].price;
+        Players_Data[Namelist[index]].warehouse += 1;
+        Players_Data[Namelist[index]].Money -= Warehouse_Detail[selected_warehouse].price;
         Icon_Warehouse_Rendering();
         Debug.Log("Warehouse Buy");
     }
     public void Icon_House_Rendering()
     {
-        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
-        Instantiate(PrefabHouseIcon, HouseIconPanal.transform);
+        // House_Icon.transform.SetParent(House_Icon_Grid).transform);
+        Instantiate(House_Icon, House_Icon_Grid.transform);
     }
     public void Icon_Condo_Rendering()
     {
-        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
-        Instantiate(PrefabCondoIcon, CondoIconPanal.transform);
+        // House_Icon.transform.SetParent(House_Icon_Grid).transform);
+        Instantiate(Condo_Icon, Condo_Icon_Grid.transform);
     }
     public void Icon_Warehouse_Rendering()
     {
-        // PrefabHouseIcon.transform.SetParent(HouseIconPanal.transform);
-        Instantiate(PrefabWarehouseIcon, WarehouseIconPanal.transform);
+        // House_Icon.transform.SetParent(House_Icon_Grid).transform);
+        Instantiate(Warehouse_Icon, Warehouse_Icon_Grid.transform);
     }
-    public void OpenBankMenu(bool open)
+    public void OpenBank_Menu(bool open)
     {
-        BankMenu.SetActive(open);
+        Bank_Menu.SetActive(open);
     }
     public void CalculateInterset()
     {
-        int borrowmoney = int.Parse(InputAmountField.text);
-        int interestperMonth = Convert.ToInt32((borrowmoney * 0.06) / 12);
-        Interest_Message.GetComponent<TMP_Text>().text = "= " + interestperMonth.ToString() + "/month";
+        int borrowmoney = int.Parse(Bank_Borrow_Money_Input.text);
+        double monthlyInterestRate = 6 / 12.0 / 100.0;
+        int numberOfPayments = 20 * 12;
+        double monthlyPayment = borrowmoney * monthlyInterestRate * Math.Pow(1 + monthlyInterestRate, numberOfPayments) /
+                                (Math.Pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+        // Debug.Log(monthlyPayment);
+        monthlyPayment = Convert.ToInt32(monthlyPayment);
+        // Debug.Log(borrowmoney);
+        // int interestperMonth = Convert.ToInt32(borrowmoney * 0.06f / 12);
+        Bank_Monthly_Pay.GetComponent<TMP_Text>().text = "= " + monthlyPayment.ToString() + "/month";
+    }
+    public void Bank_Borrow()
+    {
+        Loan x = new()
+        {
+            amount = int.Parse(Bank_Borrow_Money_Input.text),
+            interest = 6,
+            LoanTermYears = 20,
+        };
+        Players_Data[Namelist[index]].Add_Player_Loan(x);
     }
 }
 
@@ -558,12 +575,35 @@ public class House
     public string location;
     public int price;
 }
+public class Loan
+{
+    public int amount;
+    public double interest;
+    public int LoanTermYears;
+    public int CalculateMonthlyPayment()
+    {
+        double monthlyInterestRate = interest / 12.0 / 100.0; // Convert annual interest rate to monthly and percentage to decimal
+        int numberOfPayments = LoanTermYears * 12; // Convert loan term from years to months
+        // Calculate the monthly payment using the fixed-rate mortgage formula
+        double monthlyPayment = amount * monthlyInterestRate * Math.Pow(1 + monthlyInterestRate, numberOfPayments) /
+                                (Math.Pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+        return Convert.ToInt32(monthlyPayment);
+    }
+    public void Player_Pay_Loan(PlayerMoney p)
+    {
+        int MonthlyPay = Math.Min(CalculateMonthlyPayment(), amount);
+        p.Money -= MonthlyPay;
+        amount -= MonthlyPay;
+    }
+}
 public class PlayerMoney
 {
     public int house = 0;
     public List<House> Player_House = new List<House>();
     public List<Condo> Player_Condo = new List<Condo>();
     public List<Warehouse> Player_Warehouse = new List<Warehouse>();
+    public List<Loan> Player_Loan = new List<Loan>();
+    public List<Stock> Player_Stock = new List<Stock>();
     public int condo = 0;
     public int warehouse = 0;
     public int Net_Worth = 0;
@@ -571,7 +611,7 @@ public class PlayerMoney
     public int Salary = 30000;
     public string name = "";
     // public Dictionary<string, Dictionary<float, int>> Player_Stock = new Dictionary<string, Dictionary<float, int>>();
-    public List<Stock> Player_Stock = new List<Stock>();
+
     public void Turn()
     {
         Money += Salary;
@@ -608,13 +648,28 @@ public class PlayerMoney
         }
         return Show;
     }
-    public void Calculate_Net_Worth(Dictionary<string, Stock> Stocks)
+    public void Calculate_Net_Worth(Dictionary<string, Stock> Stocks_Data)
     {
         int worth = Money;
         foreach (var stock in Player_Stock)
         {
-            worth += Convert.ToInt32(Stocks[stock.name].price * stock.amount);
+            worth += Convert.ToInt32(Stocks_Data[stock.name].price * stock.amount);
         }
         Net_Worth = worth;
+    }
+    public void Add_Player_Loan(Loan l)
+    {
+        Player_Loan.Add(l);
+    }
+    public void Pay_Loan()
+    {
+        foreach (var Loan in Player_Loan)
+        {
+            Loan.Player_Pay_Loan(this);
+            if (Loan.amount <= 0)
+            {
+                Player_Loan.Remove(Loan);
+            }
+        }
     }
 }
