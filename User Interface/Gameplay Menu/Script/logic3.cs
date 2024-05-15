@@ -71,7 +71,7 @@ public class logic3 : MonoBehaviour
     string[] Namelist = { "P1", "P2", "P3", "P4" };
     string[] StockList = { "CPALL", "GULF", "PTT", "ADVANC", "BTS" };
     string[] eventmessage = { "Right now, the economy is getting better", "Now, the economy is going down." };
-    string[] realestate_location = { "Bangkok", "Saputprakran", "Rayong", "ChingMai" };
+    string[] realestate_location = { "Bangkok", "Samut prakan", "Rayong", "ChingMai" };
     string Selected_Stock_Name = "";
     float[] StockPrice = { 59.00f, 49.00f, 13.25f, 206f, 6.10f };
     float[] StockBit = { 0.25f, 0.25f, 0.25f, 1f, 0.05f };
@@ -99,6 +99,7 @@ public class logic3 : MonoBehaviour
                 {
                     name = Namelist[i],
                     Salary = 100000,
+                    Money = 2000000,
 
                 };
                 Players_Data[Namelist[i]].Turn();
